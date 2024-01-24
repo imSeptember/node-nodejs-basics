@@ -7,6 +7,10 @@ const parseEnv = () => {
 
     // Log filtered RSS_ variables
     console.log(rssVariables);
+
+    process.argv.forEach((val, index) => {
+        console.log(`${index}: ${val}`);
+    });
 };
 
 parseEnv();
