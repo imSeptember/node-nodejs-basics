@@ -2,30 +2,21 @@ import path from 'path';
 import { release, version } from 'os';
 import { createServer } from 'http';
 import './files/c.js'; // Make sure the path is correct
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const aJson = require('./files/a.json');
+const bJson = require('./files/b.json');
 
 const random = Math.random();
 
 let unknownObject;
 
 if (random > 0.5) {
-    import('./files/a.json')
-        .then((module) => {
-            unknownObject = module.default;
-            console.log(unknownObject);
-            console.log('ZORRO');
-        })
-        .catch((error) => {
-            console.error('Error loading file a.json:', error);
-        });
+    unknownObject = aJson;
+    console.log(unknownObject);
 } else {
-    import('./files/b.json')
-        .then((module) => {
-            unknownObject = module.default;
-            console.log(unknownObject);
-        })
-        .catch((error) => {
-            console.error('Error loading file b.json:', error);
-        });
+    unknownObject = bJson;
+    console.log(unknownObject);
 }
 
 console.log(`Release ${release()}`);
