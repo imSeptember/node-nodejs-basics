@@ -15,30 +15,21 @@ const sourceFilePath = path.join(
 );
 
 const calculateHash = async () => {
-    return new Promise((resolve, reject) => {
-        const readStream = fs.createReadStream(sourceFilePath);
+    const readStream = fs.createReadStream(sourceFilePath);
 
-        const hashStream = crypto.createHash('sha256');
+    const hashStream = crypto.createHash('sha256');
 
-        readStream.on('data', (chunk) => {
-            hashStream.update(chunk);
-        });
+    readStream.on('data', (chunk) => {
+        hashStream.update(chunk);
+    });
 
-        readStream.on('end', () => {
-            const hash = hashStream.digest('hex');
+    readStream.on('end', () => {
+        const hash = hashStream.digest('hex');
 
-            const hashStreamOutput = new Readable();
-            hashStreamOutput.push(hash);
-            hashStreamOutput.push(null); // Indicates the end of the stream
-            hashStreamOutput.pipe(process.stdout);
-
-            resolve();
-        });
-
-        readStream.on('error', (err) => {
-            console.error('Error reading the file:', err);
-            reject(err);
-        });
+        const hashStreamOutput = new Readable();
+        hashStreamOutput.push(hash);
+        hashStreamOutput.push(null); // Indicates the end of the stream
+        hashStreamOutput.pipe(process.stdout);
     });
 };
 
